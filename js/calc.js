@@ -1,3 +1,4 @@
+const budget = 150000;
 const elem50 = $('.advert-price').find('.advert-ability[data-need]');
 const cycleRange = ((num) => {
     for (let i = 0; i < num; i++) {
@@ -6,6 +7,15 @@ const cycleRange = ((num) => {
     for (let z = num; z < elem50.length; z++) {
         elem50.get(z).classList.remove('advert-ability_active');
     }
+});
+const getPriceDev = (()=>{
+    let activeCompany = $('.advert-checkbox input:checked').length;
+    let countCompany = $('.advert-collection').length;
+    let devResult = Math.round((1 - (activeCompany-1)*0.1)*activeCompany*countCompany*25000);
+    $('.js-price-dev').html(devResult + ' ₽');
+});
+$('.advert-checkbox').on('click', ()=>{
+    getPriceDev();
 });
 $(".js-range-slider").ionRangeSlider({
     from: 2,

@@ -239,10 +239,10 @@ body {
     background-color: rgba(21, 21, 21, 0.85);
     transition:       .3s;
     opacity:          0;
-    pointer-events: none;
+    pointer-events:   none;
     span {
       font-weight: bold;
-      font-size: 28px;
+      font-size:   28px;
     }
   }
   &__col {
