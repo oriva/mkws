@@ -1,3 +1,4 @@
+'use strict';
 const budget = 150000;
 const elem50 = $('.advert-price').find('.advert-ability[data-need]');
 const cycleRange = ((num) => {
@@ -9,8 +10,13 @@ const cycleRange = ((num) => {
     }
 });
 const getPriceDev = (() => {
+    let countCompany = 0;
     let activeCompany = $('.advert-checkbox input[data-dev]:checked').length;
-    let countCompany = $('.advert-collection').length;
+    $('.advert-collection').each((key, item)=>{
+        if(item.querySelectorAll('input[data-dev]:checked').length>0) {
+            countCompany++;
+        }
+    });
     let devResult = Math.round((1 - (activeCompany-1)*0.1)*activeCompany*countCompany*25000);
 
     $('.js-price-dev').html(devResult + ' ₽');
@@ -76,6 +82,9 @@ $('#advert-add-theme').on('click', () => {
         '<label>Введите название</label>' +
         '</div>' +
         '</div>' +
+        '<div class="advert-city-block">' +
+        '<span>Санкт-Петербург и ЛО</span>' +
+        '</div>' +
         '<div class="advert-delete-block">' +
         '<span class="advert-delete-js">- Убрать</span>' +
         '</div>' +
@@ -87,24 +96,25 @@ $('#advert-add-theme').on('click', () => {
         '</div>' +
         '<div class="advert-calc__checkbox">' +
         '<div class="advert-checkbox">' +
-        '<input type="checkbox" name="advert-system" value="Яндекс.Директ" id="yd_' + numElem + '" data-dev="25000">' +
+        '<input class="advert-checkbox__input" type="checkbox" name="advert-system" value="Яндекс.Директ" id="yd_' + numElem + '" data-dev="25000" checked>' +
         '<label for="yd_' + numElem + '">Яндекс.Директ</label>' +
         '</div>' +
         '<div class="advert-checkbox">' +
-        '<input type="checkbox" name="advert-system" value="Google Ads" id="google_' + numElem + '" data-dev="25000">' +
+        '<input class="advert-checkbox__input" type="checkbox" name="advert-system" value="Google Ads" id="google_' + numElem + '" data-dev="25000">' +
         '<label for="google_' + numElem + '">Google Ads</label>' +
         '</div>' +
         '<div class="advert-checkbox">' +
-        '<input type="checkbox" name="advert-system" value="VK" id="vk_' + numElem + '">' +
+        '<input class="advert-checkbox__input" type="checkbox" name="advert-system" value="VK" id="vk_' + numElem + '">' +
         '<label for="vk_' + numElem + '">VK</label>' +
         '</div>' +
         '<div class="advert-checkbox">' +
-        '<input type="checkbox" name="advert-system" value="Google Ads" id="fb_' + numElem + '">' +
+        '<input class="advert-checkbox__input" type="checkbox" name="advert-system" value="Google Ads" id="fb_' + numElem + '">' +
         '<label for="fb_' + numElem + '">Instagram + Facebook</label>' +
         '</div>' +
         '</div>' +
         '</div>';
-    $('.advert-collections').append(collectElem)
+    $('.advert-collections').append(collectElem);
+    getPriceDev();
 });
 
 $('.advert-calc').on('click', (e) => {
@@ -114,5 +124,11 @@ $('.advert-calc').on('click', (e) => {
     }
     if (e.target.closest('.advert-checkbox')) {
         getPriceDev();
+    }
+    // минимум 1 инпут
+    if(e.target.closest('.advert-checkbox')) {
+        if(e.target.closest('.advert-calc__checkbox').querySelectorAll('input:checked').length===1 && e.target.closest('.advert-checkbox').querySelector('input').checked) {
+            e.preventDefault();
+        }
     }
 });
