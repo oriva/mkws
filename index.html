@@ -17,52 +17,53 @@
 			<h2 class="heading-middle">Калькулятор тарифа</h2>
 			<div class="get-info" data-info-id=""></div>
 		</div>
-		<div class="advert-collection">
-			<div class="row align-items-center">
-				<div class="advert-calc__text-col vam-child">
-					<span class="advert-calc__title">Название тематики</span>
-					<div class="get-info" data-info-id=""></div>
-				</div>
-				<div class="advert-theme-block">
-					<div class="input-group advert-theme-block__input">
-						<input type="text" class="input-group__input" name="name" autocomplete="off" placeholder="-"
-							   required>
-						<span class="bar"></span>
-						<label>Введите название</label>
+		<div class="advert-collections">
+			<div class="advert-collection">
+				<div class="row align-items-center">
+					<div class="advert-calc__text-col vam-child">
+						<span class="advert-calc__title">Название тематики</span>
+						<div class="get-info" data-info-id=""></div>
+					</div>
+					<div class="advert-theme-block">
+						<div class="input-group advert-theme-block__input">
+							<input type="text" class="input-group__input" name="name" autocomplete="off" placeholder="-"
+								   required>
+							<span class="bar"></span>
+							<label>Введите название</label>
+						</div>
+					</div>
+					<div class="advert-city-block">
+						<span>Санкт-Петербург и ЛО</span>
 					</div>
 				</div>
-				<div class="advert-city-block">
-					<span>Санкт-Петербург и ЛО</span>
-				</div>
-			</div>
-			<div class="row align-items-center advert-calc__second-block">
-				<div class="advert-calc__text-col vam-child">
-					<span class="advert-calc__title">Рекламная система</span>
-					<div class="get-info" data-info-id=""></div>
-				</div>
-				<div class="advert-calc__checkbox">
-					<div class="advert-checkbox">
-						<input type="checkbox" name="advert-system" value="Яндекс.Директ" id="yd_1">
-						<label for="yd_1">Яндекс.Директ</label>
+				<div class="row align-items-center advert-calc__second-block">
+					<div class="advert-calc__text-col vam-child">
+						<span class="advert-calc__title">Рекламная система</span>
+						<div class="get-info" data-info-id=""></div>
 					</div>
-					<div class="advert-checkbox">
-						<input type="checkbox" name="advert-system" value="Google Ads" id="google_1">
-						<label for="google_1">Google Ads</label>
-					</div>
-					<div class="advert-checkbox">
-						<input type="checkbox" name="advert-system" value="VK" id="vk_1">
-						<label for="vk_1">VK</label>
-					</div>
-					<div class="advert-checkbox">
-						<input type="checkbox" name="advert-system" value="Google Ads" id="fb_1">
-						<label for="fb_1">Instagram + Facebook</label>
+					<div class="advert-calc__checkbox">
+						<div class="advert-checkbox">
+							<input type="checkbox" name="advert-system" value="Яндекс.Директ" id="yd_1" data-dev="25000">
+							<label for="yd_1">Яндекс.Директ</label>
+						</div>
+						<div class="advert-checkbox">
+							<input type="checkbox" name="advert-system" value="Google Ads" id="google_1" data-dev="25000">
+							<label for="google_1">Google Ads</label>
+						</div>
+						<div class="advert-checkbox">
+							<input type="checkbox" name="advert-system" value="VK" id="vk_1">
+							<label for="vk_1">VK</label>
+						</div>
+						<div class="advert-checkbox">
+							<input type="checkbox" name="advert-system" value="Google Ads" id="fb_1">
+							<label for="fb_1">Instagram + Facebook</label>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-
 		<div class="advert-add-system">
-			<span>
+			<span id="advert-add-theme">
 				+ Добавить тематику
 			</span>
 		</div>

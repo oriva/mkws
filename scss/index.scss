@@ -147,10 +147,21 @@ body {
   }
 }
 
+.advert-delete-block {
+  flex: 1;
+  font-weight: bold;
+  font-size: 18px;
+  color: #E2574C;
+  span {
+    cursor: pointer;
+  }
+}
+
 .advert-city-block {
   flex: 1;
   span {
     position: relative;
+    cursor: pointer;
     &::after {
       content:          '';
       position:         absolute;
@@ -359,5 +370,12 @@ body {
     font-size:        20px;
     border:           0;
     box-shadow:       0 0 55px #549A57;
+  }
+}
+
+.advert-collection {
+  margin-top: 50px;
+  &:first-child {
+    margin-top: 0;
   }
 }
