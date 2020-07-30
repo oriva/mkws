@@ -96,39 +96,43 @@ $('#advert-add-theme').on('click', () => {
         '</div>' +
         '<div class="advert-calc__checkbox">' +
         '<div class="advert-checkbox">' +
-        '<input class="advert-checkbox__input" type="checkbox" name="advert-system" value="Яндекс.Директ" id="yd_' + numElem + '" data-dev="25000" checked>' +
+        '<input class="advert-checkbox__input" type="checkbox" name="advert-system" value="Яндекс.Директ" data-dev="25000" checked>' +
         '<label for="yd_' + numElem + '">Яндекс.Директ</label>' +
         '</div>' +
         '<div class="advert-checkbox">' +
-        '<input class="advert-checkbox__input" type="checkbox" name="advert-system" value="Google Ads" id="google_' + numElem + '" data-dev="25000">' +
+        '<input class="advert-checkbox__input" type="checkbox" name="advert-system" value="Google Ads" data-dev="25000">' +
         '<label for="google_' + numElem + '">Google Ads</label>' +
         '</div>' +
         '<div class="advert-checkbox">' +
-        '<input class="advert-checkbox__input" type="checkbox" name="advert-system" value="VK" id="vk_' + numElem + '">' +
+        '<input class="advert-checkbox__input" type="checkbox" name="advert-system" value="VK">' +
         '<label for="vk_' + numElem + '">VK</label>' +
         '</div>' +
         '<div class="advert-checkbox">' +
-        '<input class="advert-checkbox__input" type="checkbox" name="advert-system" value="Google Ads" id="fb_' + numElem + '">' +
+        '<input class="advert-checkbox__input" type="checkbox" name="advert-system" value="Google Ads">' +
         '<label for="fb_' + numElem + '">Instagram + Facebook</label>' +
         '</div>' +
         '</div>' +
         '</div>';
-    $('.advert-collections').append(collectElem);
+    $('.advert-collections').append(collectElem).addClass('can-delete');
     getPriceDev();
 });
 
 $('.advert-calc').on('click', (e) => {
-    if (e.target.classList.contains('advert-delete-js')) {
+    if (e.target.classList.contains('advert-delete-js') && e.target.closest('.can-delete')) {
         numElem--;
         e.target.closest('.advert-collections').removeChild(e.target.closest('.advert-collection'));
+        if($('.advert-collection').length === 1) {
+            $('.advert-collections').removeClass('can-delete');
+        }
     }
-    if (e.target.closest('.advert-checkbox')) {
-        getPriceDev();
-    }
+
     // минимум 1 инпут
     if(e.target.closest('.advert-checkbox')) {
         if(e.target.closest('.advert-calc__checkbox').querySelectorAll('input:checked').length===1 && e.target.closest('.advert-checkbox').querySelector('input').checked) {
             e.preventDefault();
+        } else {
+            e.target.closest('.advert-checkbox').querySelector('input').checked = !e.target.closest('.advert-checkbox').querySelector('input').checked;
+            getPriceDev();
         }
     }
 });
