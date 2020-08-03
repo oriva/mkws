@@ -214,12 +214,21 @@ body {
 .advert-popup {
   z-index:          3;
   position:         absolute;
+  height:           600px;
   width:            640px;
   right:            0;
   top:              calc(100% + 15px);
   background-color: #FFF;
   padding:          66px 72px;
   box-shadow:       -1px 3px 7px rgba(0, 0, 0, 0.2), 1px 0 7px rgba(0, 0, 0, 0.2), 0 3px 4px rgba(0, 0, 0, 0.25);
+  opacity:          0;
+  transition:       .3s;
+  &_hide {
+    display: none;
+  }
+  &_show {
+    opacity: 1;
+  }
   &__title {
     display:       block;
     margin-bottom: 35px;

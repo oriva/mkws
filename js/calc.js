@@ -9,12 +9,14 @@ let numElem = 1;
 let budget = 0;
 let priceOptions = 0;
 const getPriceOptions = (()=>{
-    budget = 0;
+    priceOptions = 0;
     $('.advert-ability:not(.advert-ability_active) input:checked').each((key, item)=>{
-        budget += item.closest('.advert-ability').dataset.price;
+        if(item.closest('.advert-ability').dataset.price && !item.closest('advert-ability_active'))
+            priceOptions += parseInt(item.closest('.advert-ability').dataset.price);
     });
 });
-const elem50 = $('.advert-price').find('.advert-ability[data-need]');
+const advPrice = $('.advert-price');
+const elem50 = advPrice.find('.advert-ability[data-need]');
 const cycleRange = ((num) => {
     for (let i = 0; i < num; i++) {
         elem50.get(i).classList.add('advert-ability_active');
@@ -34,12 +36,14 @@ const getPriceDev = (() => {
         }
     });
     let devResult = Math.round((1 - (activeCompany - 1) * 0.1) * activeCompany * countCompany * 25000);
+    console.log((1 - (activeCompany - 1) * 0.1));
     $('.js-price-dev').html(devResult + ' ₽');
 });
+//
 const getPriceSev = (() => {
     getPriceOptions();
     let countAdvAll = $('.advert-collections').find('input:checked').length;
-    let serResult = Math.round((1 - (countAdvAll - 1) * 0.1) * countAdvAll * numElem * 20000 - 0.01 * budget + priceOptions * numElem) + ' ₽';
+    let serResult = Math.round(((1 - (countAdvAll - 1) * 0.1) * countAdvAll * numElem * 20000) + (priceOptions * numElem) - (0.01 * budget)) + ' ₽';
     $('.js-price-serv').html(serResult);
 });
 $(".js-range-slider").ionRangeSlider({
@@ -70,7 +74,7 @@ $(".js-range-slider").ionRangeSlider({
         '∞',
     ],
     onChange: function (data) {
-        $('.advert-price').removeClass('advert-price_infinity');
+        advPrice.removeClass('advert-price_infinity');
         if (typeof data.from_value === 'number') {
             cycleRange((data.from_value - 50) / 50);
             $('.advert-graph__price').html(data.from_value + ' 000 ₽');
@@ -82,10 +86,13 @@ $(".js-range-slider").ionRangeSlider({
             $('.advert-graph__price').html('1 000 000 ₽');
             budget = 1000000;
         } else {
-            $('.advert-price').addClass('advert-price_infinity');
+            advPrice.addClass('advert-price_infinity');
             $('.advert-graph__price').html('Не ограничен');
         }
         getPriceSev();
+    },
+    onStart: function (data) {
+        budget = data.from_value * 1000;
     }
 });
 $('#advert-add-theme').on('click', () => {
@@ -149,6 +156,8 @@ $('.advert-calc').on('click', (e) => {
         if($('.advert-collection').length === 1) {
             $('.advert-collections').removeClass('can-delete');
         }
+        getPriceDev();
+        getPriceSev();
     }
     // минимум 1 инпут
     if(e.target.closest('.advert-checkbox')) {
@@ -177,8 +186,8 @@ $('.advert-calc').on('click', (e) => {
     }
 });
 
-$('.advert-price').on('click', (e)=>{
-    if(e.target.closest('.advert-ability') && e.target.closest('.advert-ability').querySelector('input')) {
+advPrice.on('click', (e)=>{
+    if(e.target.closest('.advert-ability') && e.target.closest('.advert-ability').querySelector('input') && e.target.closest('.advert-ability').dataset.need!=='1000') {
         if(e.target.closest('.advert-ability').dataset.need>50 && !e.target.closest('.advert-ability').classList.contains('advert-ability_active')) {
             e.target.closest('.advert-ability').querySelector('input').checked = !e.target.closest('.advert-ability').querySelector('input').checked;
             getPriceSev();
