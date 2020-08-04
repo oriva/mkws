@@ -247,6 +247,8 @@ body {
     border-top: 0;
     padding:    25px 27px;
     font-size:  18px;
+    max-height: 80%;
+    overflow:   auto;
   }
   &__parent {
     &.show {
@@ -278,9 +280,10 @@ body {
         transition:          .3s;
       }
       span {
-        cursor: default;
+        display: block;
+        cursor:  default;
       }
-      & + li {
+      &.advert-popup__parent + li {
         display: none;
       }
       & > span {

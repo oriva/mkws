@@ -8,6 +8,7 @@ $.getJSON('region.json', function(data) {
 let numElem = 1;
 let budget = 0;
 let priceOptions = 0;
+
 const getPriceOptions = (()=>{
     priceOptions = 0;
     $('.advert-ability:not(.advert-ability_active) input:checked').each((key, item)=>{
@@ -15,6 +16,7 @@ const getPriceOptions = (()=>{
             priceOptions += parseInt(item.closest('.advert-ability').dataset.price);
     });
 });
+
 const advPrice = $('.advert-price');
 const elem50 = advPrice.find('.advert-ability[data-need]');
 const cycleRange = ((num) => {
@@ -27,23 +29,54 @@ const cycleRange = ((num) => {
         elem50.get(z).querySelector('input').checked = false;
     }
 });
+const printCities = ((modal) => {
+    modal.classList.add('advert-popup_load');
+    const contElem = modal.querySelector('.advert-popup__cont');
+    let domElems = document.createElement('ul');
+    domElems.classList.add('advert-popup__ul');
+    const printFn = ((thisParent, arr) => {
+        arr.forEach((item) => {
+            let newParent = '';
+            let liElem = document.createElement('li');
+            liElem.innerHTML = '' +
+                '<input name="advert-popup" type="checkbox" value="' + item.name + '">' +
+                '<span>' + item.name + '</span>';
+            if (item.areas.length > 0) {
+                console.log('Parent up item');
+                let arrow = document.createElement('div');
+                arrow.classList.add('advert-popup__arrow');
+                liElem.classList.add('advert-popup__parent');
+                liElem.prepend(arrow);
+                newParent = document.createElement('li');
+                printFn(newParent, item.areas)
+            }
+            thisParent.appendChild(liElem);
+            if(newParent)
+                thisParent.appendChild(newParent);
+        });
+    });
+    contElem.innerHTML = '';
+    printFn(domElems, cities);
+    contElem.appendChild(domElems);
+});
 const getPriceDev = (() => {
     let countCompany = 0;
-    let activeCompany = $('.advert-checkbox input[data-dev]:checked').length;
+    let activeRS = $('.advert-checkbox input[data-dev]:checked').length;
     $('.advert-collection').each((key, item)=>{
         if(item.querySelectorAll('input[data-dev]:checked').length>0) {
             countCompany++;
         }
     });
-    let devResult = Math.round((1 - (activeCompany - 1) * 0.1) * activeCompany * countCompany * 25000);
-    console.log((1 - (activeCompany - 1) * 0.1));
+    let devResult = Math.round((1 - (countCompany - 1) * 0.1) * activeRS * 25000);
+    console.log((1 - (activeRS - 1) * 0.1));
+    console.log(countCompany * 25000);
     $('.js-price-dev').html(devResult + ' ₽');
 });
-//
+
 const getPriceSev = (() => {
     getPriceOptions();
     let countAdvAll = $('.advert-collections').find('input:checked').length;
-    let serResult = Math.round(((1 - (countAdvAll - 1) * 0.1) * countAdvAll * numElem * 20000) + (priceOptions * numElem) - (0.01 * budget)) + ' ₽';
+    let serResult = Math.round(((1 - (numElem - 1) * 0.1) * numElem * countAdvAll * 20000) + (priceOptions * numElem) - (0.01 * budget)) + ' ₽';
     $('.js-price-serv').html(serResult);
 });
 $(".js-range-slider").ionRangeSlider({
@@ -114,7 +147,15 @@ $('#advert-add-theme').on('click', () => {
         '</div>' +
         '</div>' +
         '<div class="advert-city-block">' +
-        '<span>Санкт-Петербург и ЛО</span>' +
+        '<div class="advert-city-block__in">' +
+        '<span class="advert-city-block__city">Санкт-Петербург и ЛО</span>' +
+        '<div class="advert-popup advert-popup_hide">' +
+        '<span class="advert-popup__title">Выберите регион</span>' +
+        '<input type="text" class="advert-popup__filter" placeholder="Найти регион">' +
+        '<div class="advert-popup__cont">' +
+        '</div>' +
+        '</div>' +
+        '</div>' +
         '</div>' +
         '<div class="advert-delete-block">' +
         '<span class="advert-delete-js">- Убрать</span>' +
@@ -182,6 +223,31 @@ $('.advert-calc').on('click', (e) => {
         } else {
             e.target.parentNode.classList.toggle('show');
             $(e.target.parentNode.nextElementSibling).slideToggle();
+        }
+    }
+    if (e.target.classList.contains('advert-city-block__city')) {
+        let elem = e.target.nextElementSibling;
+        const evDoc = ((e) => {
+            e.preventDefault();
+            if (!e.target.closest('.advert-popup')) {
+                elem.classList.remove('advert-popup_show');
+                setTimeout(() => {
+                    elem.classList.add('advert-popup_hide');
+                }, 400);
+                document.removeEventListener('click', evDoc, false);
+            }
+        });
+        if (elem.classList.contains('advert-popup_hide')) {
+            setTimeout(() => {
+                document.addEventListener('click', evDoc, false);
+            }, 100);
+        }
+        e.target.nextElementSibling.classList.remove('advert-popup_hide');
+        setTimeout(() => {
+            e.target.nextElementSibling.classList.add('advert-popup_show');
+        }, 100);
+        if (!elem.classList.contains('advert-popup_load')) {
+            printCities(elem);
         }
     }
 });
